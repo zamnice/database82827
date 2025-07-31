@@ -1,118 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAM ZAM Color Changing Text</title>
+    <title>Zam Zam - Merakitzam</title>
+    <!-- Add your existing head content here -->
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #111;
-            font-family: 'Arial', sans-serif;
+        /* Skeleton Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -468px 0 }
+            100% { background-position: 468px 0 }
+        }
+        
+        .skeleton {
+            animation: shimmer 1.5s infinite linear;
+            background: linear-gradient(to right, #FFE8B0 8%, #FFE8B0 18%, #FF6B00 33%);
+            background-size: 800px 104px;
+            position: relative;
+            border-radius: 6px;
+        }
+        
+        .skeleton-item {
+            background: #FFE8B0;
             overflow: hidden;
-        }
-        
-        .zamzam-container {
             position: relative;
-            text-align: center;
         }
         
-        .zamzam-text {
-            font-size: 8vw;
-            font-weight: bold;
-            color: white; /* Fallback color */
-            background: linear-gradient(45deg, #ff0000, #ff9900, #33cc33, #0099ff, #6633cc);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
-            animation: gradientShift 8s ease infinite, pulse 2s ease-in-out infinite;
-            padding: 20px;
-            position: relative;
-            z-index: 2;
+        .skeleton-logo {
+            width: 120px;
+            height: 40px;
+            margin-bottom: 20px;
         }
         
-        /* Fallback untuk browser yang tidak support background-clip:text */
-        .zamzam-text::before {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
+        .skeleton-header {
+            width: 200px;
+            height: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .skeleton-text {
+            width: 80%;
+            height: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .skeleton-text.short {
+            width: 60%;
+        }
+        
+        .skeleton-button {
+            width: 100px;
+            height: 35px;
+            border-radius: 4px;
+        }
+        
+        .skeleton-card {
             width: 100%;
-            height: 100%;
-            color: white;
-            z-index: -1;
-        }
-        
-        @supports (-webkit-background-clip: text) or (background-clip: text) {
-            .zamzam-text::before {
-                display: none;
-            }
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 70%);
-            z-index: 1;
+            height: 150px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="zamzam-container">
-        <div class="glow"></div>
-        <h1 class="zamzam-text" data-text="ZAM ZAM">ZAM ZAM</h1>
+    <!-- Skeleton Loading Screen -->
+    <div id="skeletonLoading" class="fixed inset-0 bg-[#FFE8B0] z-50 flex flex-col items-center justify-center p-6">
+        <div class="w-full max-w-md mx-auto">
+            <!-- Logo Skeleton -->
+            <div class="skeleton-logo skeleton mx-auto"></div>
+            
+            <!-- Header Skeleton -->
+            <div class="skeleton-header skeleton mx-auto"></div>
+            
+            <!-- Content Skeleton -->
+            <div class="space-y-4">
+                <div class="skeleton-text skeleton"></div>
+                <div class="skeleton-text short skeleton"></div>
+                
+                <!-- Button Skeletons -->
+                <div class="flex space-x-4 justify-center">
+                    <div class="skeleton-button skeleton"></div>
+                    <div class="skeleton-button skeleton"></div>
+                </div>
+                
+                <!-- Card Skeletons -->
+                <div class="grid grid-cols-2 gap-4 mt-8">
+                    <div class="skeleton-card skeleton"></div>
+                    <div class="skeleton-card skeleton"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your existing content (hidden during loading) -->
+    <div id="mainContent" class="hidden">
+        <!-- All your existing HTML content here -->
     </div>
 
     <script>
-        // Fungsi untuk mengubah warna secara acak
-        function randomizeGradient() {
-            const colors = [];
-            const colorCount = 3 + Math.floor(Math.random() * 3); // 3-5 warna
-            
-            for (let i = 0; i < colorCount; i++) {
-                const hue = Math.floor(Math.random() * 360);
-                colors.push(`hsl(${hue}, 100%, 50%)`);
-            }
-            
-            const angle = Math.floor(Math.random() * 360);
-            const textElement = document.querySelector('.zamzam-text');
-            
-            textElement.style.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
-            textElement.style.backgroundSize = `${200 + Math.random() * 300}% ${200 + Math.random() * 300}%`;
-            
-            // Ubah kecepatan animasi secara dinamis
-            const duration = 5 + Math.random() * 10;
-            textElement.style.animationDuration = `${duration}s, 2s`;
-        }
-        
-        // Acak gradient setiap 5 detik
-        setInterval(randomizeGradient, 5000);
-        
-        // Jalankan sekali di awal
-        randomizeGradient();
+        // Simulate loading (replace with actual content loading logic)
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('skeletonLoading').style.opacity = '0';
+                document.getElementById('mainContent').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    document.getElementById('skeletonLoading').style.display = 'none';
+                }, 500);
+            }, 1500); // Adjust timing as needed
+        });
     </script>
 </body>
 </html>
