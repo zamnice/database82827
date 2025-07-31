@@ -3,43 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Text Gradient</title>
+    <title>ZAM ZAM Color Changing Text</title>
     <style>
-        .dynamic-gradient-text {
-            font-size: 48px;
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        .zamzam-text {
+            font-size: 8vw;
             font-weight: bold;
-            background: linear-gradient(90deg, red, yellow);
+            background: linear-gradient(45deg, #ff0000, #ff9900, #33cc33, #0099ff, #6633cc);
+            background-size: 400% 400%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            transition: background 1s ease;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            animation: gradientShift 8s ease infinite, pulse 2s ease-in-out infinite;
+            padding: 20px;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Untuk efek tambahan */
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 70%);
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-    <h1 class="dynamic-gradient-text">Teks Gradien Dinamis</h1>
+    <div class="glow"></div>
+    <h1 class="zamzam-text">ZAM ZAM</h1>
 
-    <!-- Menggunakan CDN untuk Color.js (library kecil untuk manipulasi warna) -->
-    <script src="https://cdn.jsdelivr.net/npm/color-js@1.0.3/color.js"></script>
+    <!-- Script tambahan untuk efek lebih dinamis -->
     <script>
-        const textElement = document.querySelector('.dynamic-gradient-text');
-        let hue = 0;
-        
-        function updateGradient() {
-            hue = (hue + 2) % 360;
+        // Fungsi untuk mengubah warna secara acak
+        function randomizeGradient() {
+            const colors = [];
+            const colorCount = 3 + Math.floor(Math.random() * 3); // 3-5 warna
             
-            // Buat warna dari HSL (Hue, Saturation, Lightness)
-            const color1 = Color({ h: hue, s: 100, l: 50 });
-            const color2 = Color({ h: (hue + 120) % 360, s: 100, l: 50 });
-            const color3 = Color({ h: (hue + 240) % 360, s: 100, l: 50 });
+            for (let i = 0; i < colorCount; i++) {
+                const hue = Math.floor(Math.random() * 360);
+                colors.push(`hsl(${hue}, 100%, 50%)`);
+            }
             
-            textElement.style.background = 
-                `linear-gradient(90deg, ${color1}, ${color2}, ${color3})`;
+            const angle = Math.floor(Math.random() * 360);
+            const textElement = document.querySelector('.zamzam-text');
             
-            requestAnimationFrame(updateGradient);
+            textElement.style.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
+            textElement.style.backgroundSize = `${200 + Math.random() * 300}% ${200 + Math.random() * 300}%`;
+            
+            // Ubah kecepatan animasi secara dinamis
+            const duration = 5 + Math.random() * 10;
+            textElement.style.animationDuration = `${duration}s, 2s`;
         }
         
-        updateGradient();
+        // Acak gradient setiap 5 detik
+        setInterval(randomizeGradient, 5000);
+        
+        // Jalankan sekali di awal
+        randomizeGradient();
     </script>
 </body>
 </html>
