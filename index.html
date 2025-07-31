@@ -3,50 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Text Gradient</title>
+    <title>Dynamic Text Gradient</title>
     <style>
-        .anime-gradient-text {
+        .dynamic-gradient-text {
             font-size: 48px;
             font-weight: bold;
-            background: linear-gradient(90deg, #ff0000, #0000ff);
+            background: linear-gradient(90deg, red, yellow);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            transition: background 1s ease;
         }
     </style>
-    <!-- Menggunakan CDN Anime.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
-    <h1 class="anime-gradient-text">Teks Gradien Anime</h1>
+    <h1 class="dynamic-gradient-text">Teks Gradien Dinamis</h1>
 
+    <!-- Menggunakan CDN untuk Color.js (library kecil untuk manipulasi warna) -->
+    <script src="https://cdn.jsdelivr.net/npm/color-js@1.0.3/color.js"></script>
     <script>
-        const colors = [
-            ['#FF0000', '#00FF00'], // merah ke hijau
-            ['#00FF00', '#0000FF'], // hijau ke biru
-            ['#0000FF', '#FF00FF'], // biru ke magenta
-            ['#FF00FF', '#FF0000']  // magenta ke merah
-        ];
+        const textElement = document.querySelector('.dynamic-gradient-text');
+        let hue = 0;
         
-        let currentIndex = 0;
-        
-        function animateGradient() {
-            anime({
-                targets: '.anime-gradient-text',
-                background: [
-                    `linear-gradient(90deg, ${colors[currentIndex][0]}, ${colors[currentIndex][1]})`,
-                    `linear-gradient(90deg, ${colors[(currentIndex + 1) % colors.length][0]}, ${colors[(currentIndex + 1) % colors.length][1]})`
-                ],
-                easing: 'easeInOutQuad',
-                duration: 2000,
-                complete: function() {
-                    currentIndex = (currentIndex + 1) % colors.length;
-                    animateGradient();
-                }
-            });
+        function updateGradient() {
+            hue = (hue + 2) % 360;
+            
+            // Buat warna dari HSL (Hue, Saturation, Lightness)
+            const color1 = Color({ h: hue, s: 100, l: 50 });
+            const color2 = Color({ h: (hue + 120) % 360, s: 100, l: 50 });
+            const color3 = Color({ h: (hue + 240) % 360, s: 100, l: 50 });
+            
+            textElement.style.background = 
+                `linear-gradient(90deg, ${color1}, ${color2}, ${color3})`;
+            
+            requestAnimationFrame(updateGradient);
         }
         
-        animateGradient();
+        updateGradient();
     </script>
 </body>
 </html>
