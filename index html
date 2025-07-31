@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MerakitZam Store</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5efe6;
+      color: #333;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #FF6B00;
+      margin-bottom: 10px;
+    }
+
+    #searchInput {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      border: 2px solid #FF6B00;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    #productList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border: 1px solid #FFD08C;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #FF6B00;
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      color: #6F4E37;
+      font-size: 16px;
+    }
+
+    .no-result {
+      text-align: center;
+      color: #999;
+      margin-top: 30px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛍️ MerakitZam Store</h1>
+    <input type="text" id="searchInput" placeholder="Cari barang..."/>
+  </header>
+
+  <main id="productList"></main>
+
+  <script>
+    const products = [
+      { name: "Notebook Kreatif", price: "Rp25.000" },
+      { name: "Sticky Notes Warna", price: "Rp10.000" },
+      { name: "Pulpen 5-in-1", price: "Rp15.000" },
+      { name: "Planner Harian Zam", price: "Rp30.000" },
+      { name: "Stiker Motivasi", price: "Rp5.000" },
+      { name: "Tas Belajar Oranye", price: "Rp45.000" },
+      { name: "Paket Bundling Starter", price: "Rp75.000" },
+      { name: "Kartu Ujian Keren", price: "Rp8.000" },
+      { name: "Penggaris Transparan", price: "Rp7.000" }
+    ];
+
+    const productList = document.getElementById("productList");
+    const searchInput = document.getElementById("searchInput");
+
+    function displayProducts(filteredProducts) {
+      productList.innerHTML = "";
+      if (filteredProducts.length === 0) {
+        productList.innerHTML = "<div class='no-result'>Tidak ada produk ditemukan.</div>";
+        return;
+      }
+
+      filteredProducts.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        const name = document.createElement("div");
+        name.className = "product-name";
+        name.textContent = product.name;
+
+        const price = document.createElement("div");
+        price.className = "product-price";
+        price.textContent = product.price;
+
+        card.appendChild(name);
+        card.appendChild(price);
+        productList.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.toLowerCase();
+      const filtered = products.filter(p =>
+        p.name.toLowerCase().includes(keyword)
+      );
+      displayProducts(filtered);
+    });
+
+    // Tampilkan semua produk saat pertama kali
+    displayProducts(products);
+  </script>
+</body>
+</html>
